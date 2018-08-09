@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.Loader;
 
-public class ProviderLoader<T> extends Loader<Void> implements Provider<T> {
+public class InstanceLoader<T> extends Loader<Void> implements InstanceProvider<T> {
 
     protected T mObject;
 
@@ -19,7 +19,7 @@ public class ProviderLoader<T> extends Loader<Void> implements Provider<T> {
      *
      * @param context used to retrieve the application context.
      */
-    public ProviderLoader(@NonNull Context context) {
+    public InstanceLoader(@NonNull Context context) {
         super(context);
     }
 

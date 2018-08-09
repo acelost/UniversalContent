@@ -7,9 +7,12 @@ import android.support.transition.Fade;
 import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.acelost.universalcontent.R;
 import com.acelost.universalcontent.contentbased.content.base.BaseContent;
@@ -26,6 +29,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ProfileContent extends BaseContent {
 
+    private static final Boolean ENABLE_LOGGING = true;
+
     @Nullable
     private ViewGroup mRoot;
 
@@ -41,17 +46,36 @@ public class ProfileContent extends BaseContent {
     @NonNull
     @Override
     public View createView(@NonNull Context context, @Nullable ViewGroup parent) {
+        if (ENABLE_LOGGING) {
+            log("lifecycle -> createView");
+        }
         mRoot = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.content_profile, parent);
+        final TextView name = mRoot.findViewById(R.id.name);
+        mRoot.findViewById(R.id.avatar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence text = name.getText();
+                if (!TextUtils.isEmpty(text)) {
+                    name.setText(text.subSequence(0, text.length()-1));
+                }
+            }
+        });
         return mRoot;
     }
 
     @Override
     public void destroyView() {
+        if (ENABLE_LOGGING) {
+            log("lifecycle -> destroyView");
+        }
         mRoot = null;
     }
 
     @Override
     public void attachToContainer(@NonNull ContentContainer container) {
+        if (ENABLE_LOGGING) {
+            log("lifecycle -> attachToContainer");
+        }
         super.attachToContainer(container);
         ContentContainer.HasTitle hasTitle = getContainer(ContentContainer.HasTitle.class);
         if (hasTitle != null) {
@@ -94,6 +118,9 @@ public class ProfileContent extends BaseContent {
 
     @Override
     public void detachFromContainer() {
+        if (ENABLE_LOGGING) {
+            log("lifecycle -> detachFromContainer");
+        }
         Disposable disposable = mLoadProfileDisposable.get();
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
@@ -142,6 +169,10 @@ public class ProfileContent extends BaseContent {
             content.setVisibility(View.VISIBLE);
             progress.setVisibility(View.GONE);
         }
+    }
+
+    private void log(Object message) {
+        Log.e("ProfileContent", this.toString() + ": " + message.toString());
     }
 
 }

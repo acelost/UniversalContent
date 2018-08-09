@@ -7,37 +7,37 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-public class LoaderStorage<T> implements Storage<T>, LoaderManager.LoaderCallbacks<Void> {
+public class RetainInstanceHelper<T> implements StorageProvider<T>, LoaderManager.LoaderCallbacks<Void> {
 
     private Context mContext;
     private LoaderManager mLoaderManager;
 
-    public LoaderStorage(@NonNull Context context, @NonNull LoaderManager manager) {
+    public RetainInstanceHelper(@NonNull Context context, @NonNull LoaderManager manager) {
         mContext = context;
         mLoaderManager = manager;
     }
 
     @Override
-    public void persist(int key, @NonNull T obj) {
+    public void persist(int key, @NonNull T instance) {
         Loader loader = mLoaderManager.getLoader(key);
-        Provider<T> provider;
-        if (loader instanceof Provider) {
+        InstanceProvider<T> provider;
+        if (loader instanceof InstanceProvider) {
             //noinspection unchecked
-            provider = (Provider<T>) loader;
+            provider = (InstanceProvider<T>) loader;
         } else {
             //noinspection unchecked
-            provider = (Provider<T>) mLoaderManager.initLoader(key, null, this);
+            provider = (InstanceProvider<T>) mLoaderManager.initLoader(key, null, this);
         }
-        provider.set(obj);
+        provider.set(instance);
     }
 
     @Nullable
     @Override
     public T obtain(int key) {
         Loader loader = mLoaderManager.getLoader(key);
-        if (loader instanceof Provider) {
+        if (loader instanceof InstanceProvider) {
             //noinspection unchecked
-            return ((Provider<T>) loader).get();
+            return ((InstanceProvider<T>) loader).get();
         }
         return null;
     }
@@ -45,13 +45,15 @@ public class LoaderStorage<T> implements Storage<T>, LoaderManager.LoaderCallbac
     @NonNull
     @Override
     public Loader<Void> onCreateLoader(int id, @Nullable Bundle args) {
-        return new ProviderLoader<>(mContext);
+        return new InstanceLoader<>(mContext);
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Void> loader, Void data) { }
 
     @Override
-    public void onLoaderReset(@NonNull Loader<Void> loader) { }
+    public void onLoaderReset(@NonNull Loader<Void> loader) {
+
+    }
 
 }
