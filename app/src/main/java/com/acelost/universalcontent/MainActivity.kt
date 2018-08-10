@@ -7,8 +7,8 @@ import android.widget.Button
 import com.acelost.universalcontent.contentbased.container.AlertDialogContainer
 import com.acelost.universalcontent.contentbased.container.BottomSheetContainer
 import com.acelost.universalcontent.contentbased.container.FragmentContainer
-import com.acelost.universalcontent.contentbased.impl.ProfileContent
-import com.acelost.universalcontent.views.ProfileActivity
+import com.acelost.universalcontent.contentbased.content.impl.ProfileContent
+import com.acelost.universalcontent.contentbased.content.impl.ProfileActivity
 
 class MainActivity : AppCompatActivity() {
 

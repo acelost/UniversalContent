@@ -1,4 +1,4 @@
-package com.acelost.universalcontent.contentbased.impl;
+package com.acelost.universalcontent.contentbased.content.impl;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
