@@ -5,10 +5,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.acelost.universalcontent.contentbased.container.AlertDialogContainer
+import com.acelost.universalcontent.contentbased.container.BottomSheetContainer
+import com.acelost.universalcontent.contentbased.container.FragmentContainer
 import com.acelost.universalcontent.contentbased.impl.ProfileContent
-import com.acelost.universalcontent.views.MyActivity
-import com.acelost.universalcontent.views.MyBottomSheetFragment
-import com.acelost.universalcontent.views.MyFragment
+import com.acelost.universalcontent.views.ProfileActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,15 +20,16 @@ class MainActivity : AppCompatActivity() {
                     .show(supportFragmentManager, "ALERT_DIALOG:PROFILE")
         }
         findViewById<Button>(R.id.show_bottom_sheet).setOnClickListener {
-            val fragment = MyBottomSheetFragment()
-            fragment.show(supportFragmentManager, "BOTTOM_SHEET:PROFILE")
+            BottomSheetContainer.withContent(ProfileContent())
+                    .instant(false)
+                    .show(supportFragmentManager, "BOTTOM_SHEET:PROFILE")
         }
         findViewById<Button>(R.id.show_activity).setOnClickListener {
-            val intent = Intent(this, MyActivity::class.java)
+            val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
         findViewById<Button>(R.id.show_fragment).setOnClickListener {
-            val fragment = MyFragment()
+            val fragment = FragmentContainer.withContent(ProfileContent())
             supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit()

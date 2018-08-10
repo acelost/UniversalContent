@@ -37,6 +37,8 @@ public class ProfileContent extends BaseContent {
     @NonNull
     private final SerialDisposable mLoadProfileDisposable = new SerialDisposable();
 
+    private boolean mLoaded;
+
     @NonNull
     @Override
     public String getContentId() {
@@ -81,28 +83,33 @@ public class ProfileContent extends BaseContent {
         if (hasTitle != null) {
             hasTitle.setContentTitle("Профиль сотрудника");
         }
-        if (isContainer(ContentContainer.Appearing.class)) {
-            hideView();
+        if (mLoaded) {
+            showProfile();
         } else {
-            showLoading();
-        }
-        mLoadProfileDisposable.set(
-                Completable.timer(500, TimeUnit.MILLISECONDS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                new Action() {
-                                    @Override
-                                    public void run() throws Exception {
-                                        showProfile();
-                                        ContentContainer.Appearing appearing = getContainer(ContentContainer.Appearing.class);
-                                        if (appearing != null) {
-                                            appearing.requestAppearance(ProfileContent.this);
+            if (isContainer(ContentContainer.Appearing.class)) {
+                hideView();
+            } else {
+                showLoading();
+            }
+            mLoadProfileDisposable.set(
+                    Completable.timer(500, TimeUnit.MILLISECONDS)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    new Action() {
+                                        @Override
+                                        public void run() throws Exception {
+                                            mLoaded = true;
+                                            showProfile();
+                                            ContentContainer.Appearing appearing = getContainer(ContentContainer.Appearing.class);
+                                            if (appearing != null) {
+                                                appearing.requestAppearance(ProfileContent.this);
+                                            }
                                         }
                                     }
-                                }
-                        )
-        );
+                            )
+            );
+        }
         if (mRoot != null) {
             mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override

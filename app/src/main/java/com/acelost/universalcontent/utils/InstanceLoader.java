@@ -24,6 +24,12 @@ public class InstanceLoader<T> extends Loader<Void> implements InstanceProvider<
     }
 
     @Override
+    protected void onStartLoading() {
+        super.onStartLoading();
+        deliverResult(null);
+    }
+
+    @Override
     protected void onReset() {
         mObject = null; // todo onDestroy
     }
