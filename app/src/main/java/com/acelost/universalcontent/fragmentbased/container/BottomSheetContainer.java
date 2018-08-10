@@ -11,7 +11,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.acelost.universalcontent.fragmentbased.container.properties.Appearing;
+import com.acelost.universalcontent.fragmentbased.properties.Appearing;
 
 public class BottomSheetContainer extends DialogContainer implements Appearing {
 

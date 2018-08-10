@@ -1,4 +1,4 @@
-package com.acelost.universalcontent.fragmentbased.container.properties;
+package com.acelost.universalcontent.fragmentbased.properties;
 
 import android.support.annotation.Nullable;
 

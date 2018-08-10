@@ -17,9 +17,9 @@ import android.widget.TextView;
 import com.acelost.universalcontent.R;
 import com.acelost.universalcontent.contentbased.content.impl.ProfileContent;
 import com.acelost.universalcontent.contentbased.core.ContentContainer;
-import com.acelost.universalcontent.fragmentbased.container.properties.Appearing;
-import com.acelost.universalcontent.fragmentbased.container.properties.Disappearing;
-import com.acelost.universalcontent.fragmentbased.container.properties.HasTitle;
+import com.acelost.universalcontent.fragmentbased.properties.Appearing;
+import com.acelost.universalcontent.fragmentbased.properties.Disappearing;
+import com.acelost.universalcontent.fragmentbased.properties.HasTitle;
 
 import java.util.concurrent.TimeUnit;
 

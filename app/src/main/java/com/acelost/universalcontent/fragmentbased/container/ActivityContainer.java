@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
-import com.acelost.universalcontent.fragmentbased.container.properties.HasTitle;
+import com.acelost.universalcontent.fragmentbased.properties.HasTitle;
 
 public abstract class ActivityContainer extends AppCompatActivity implements HasTitle {
 
