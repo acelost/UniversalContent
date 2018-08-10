@@ -10,7 +10,7 @@ import com.acelost.universalcontent.contentbased.container.FragmentContainer
 import com.acelost.universalcontent.contentbased.content.impl.ProfileContent
 import com.acelost.universalcontent.contentbased.content.impl.ProfileActivity
 
-class MainActivity : AppCompatActivity() {
+class ContentBasedApproachActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

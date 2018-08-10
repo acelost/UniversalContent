@@ -1,4 +1,4 @@
-package com.acelost.universalcontent.contentbased.container;
+package com.acelost.universalcontent.fragmentbased.container;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,14 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
-import android.view.LayoutInflater;
+import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.acelost.universalcontent.contentbased.core.Content;
-import com.acelost.universalcontent.contentbased.core.ContentContainer;
+import com.acelost.universalcontent.fragmentbased.container.properties.Appearing;
 
-public class BottomSheetContainer extends DialogContainer implements ContentContainer.Appearing {
+public class BottomSheetContainer extends DialogContainer implements Appearing {
 
     private static final String INSTANT_ARG = BottomSheetContainer.class.getSimpleName() + ":INSTANT_ARG";
     private static final String SHOWN_STATE_KEY = BottomSheetContainer.class.getSimpleName() + ":SHOWN_STATE_KEY";
@@ -26,7 +24,7 @@ public class BottomSheetContainer extends DialogContainer implements ContentCont
     private boolean mShown;
 
     @NonNull
-    public static BottomSheetContainer withContent(@NonNull Content content) {
+    public static BottomSheetContainer withContent(@NonNull Fragment content) {
         BottomSheetContainer container = new BottomSheetContainer();
         container.setContent(content);
         return container;
@@ -56,20 +54,9 @@ public class BottomSheetContainer extends DialogContainer implements ContentCont
         return new BottomSheetDialog(getContext());
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Context context = getContext();
-        if (context == null) {
-            return super.onCreateView(inflater, container, savedInstanceState);
-        }
-        return getContent().createView(context, container);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getContent().attachToContainer(this);
         getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -100,7 +87,7 @@ public class BottomSheetContainer extends DialogContainer implements ContentCont
     }
 
     @Override
-    public void requestAppearance(@NonNull Content requesting) {
+    public void requestAppearance() {
         showContent();
     }
 
