@@ -20,10 +20,17 @@
         android:text="show bottom sheet"/>
 
     <Button
-        android:id="@+id/show_activity"
+        android:id="@+id/show_popup_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/show_bottom_sheet"
+        android:text="show popup"/>
+
+    <Button
+        android:id="@+id/show_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/show_popup_menu"
         android:text="show activity"/>
 
     <Button
