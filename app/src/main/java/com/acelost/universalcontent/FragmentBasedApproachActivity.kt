@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
+import android.widget.Toast
 import com.acelost.universalcontent.fragmentbased.container.*
 import com.acelost.universalcontent.fragmentbased.content.ProfileContentFragment
 import com.acelost.universalcontent.fragmentbased.content.impl.ProfileActivity
+import com.acelost.universalcontent.fragmentbased.properties.ResultHandler
 
-class FragmentBasedApproachActivity : AppCompatActivity() {
+class FragmentBasedApproachActivity : AppCompatActivity(), ResultHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,10 @@ class FragmentBasedApproachActivity : AppCompatActivity() {
                     .replace(R.id.fragment_container, fragment)
                     .commit()
         }
+    }
+
+    override fun onResult(contentId: String, resultCode: Int, data: Bundle) {
+        Toast.makeText(this, data.getString("message"), Toast.LENGTH_SHORT).show()
     }
 
 }

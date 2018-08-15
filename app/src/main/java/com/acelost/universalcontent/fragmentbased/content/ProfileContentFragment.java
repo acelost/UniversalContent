@@ -20,6 +20,7 @@ import com.acelost.universalcontent.contentbased.core.ContentContainer;
 import com.acelost.universalcontent.fragmentbased.properties.Appearing;
 import com.acelost.universalcontent.fragmentbased.properties.Disappearing;
 import com.acelost.universalcontent.fragmentbased.properties.HasTitle;
+import com.acelost.universalcontent.fragmentbased.properties.ResultHandler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -110,10 +111,16 @@ public class ProfileContentFragment extends Fragment {
             mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Disappearing disappearing = getContainer(Disappearing.class);
+                    ResultHandler handler = getContainer(ResultHandler.class);
+                    if (handler != null) {
+                        Bundle data = new Bundle();
+                        data.putString("message", "Hello, world!");
+                        handler.onResult("", 0, data);
+                    }
+                    /*Disappearing disappearing = getContainer(Disappearing.class);
                     if (disappearing != null) {
                         disappearing.requestDisappearance();
-                    }
+                    }*/
                 }
             });
         }
