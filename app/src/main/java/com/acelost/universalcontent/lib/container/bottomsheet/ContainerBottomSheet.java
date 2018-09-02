@@ -9,8 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.View;
 
+import com.acelost.universalcontent.R;
 import com.acelost.universalcontent.lib.container.base.BaseContainerDialogFragment;
 import com.acelost.universalcontent.lib.container.property.Closeable;
 import com.acelost.universalcontent.lib.container.property.Showable;
@@ -57,6 +59,12 @@ public class ContainerBottomSheet extends BaseContainerDialogFragment implements
         return this;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.TransparentBottomSheetTheme);
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -65,7 +73,7 @@ public class ContainerBottomSheet extends BaseContainerDialogFragment implements
             return super.onCreateDialog(savedInstanceState);
         }
         // Указываем BottomSheetDialog в качестве диалогового окна
-        return new BottomSheetDialog(context);
+        return new BottomSheetDialog(context, getTheme());
     }
 
     @Override
@@ -107,6 +115,22 @@ public class ContainerBottomSheet extends BaseContainerDialogFragment implements
         View sheet = ((BottomSheetDialog) dialog).findViewById(android.support.design.R.id.design_bottom_sheet);
         if (sheet != null) {
             mBehavior = BottomSheetBehavior.from(sheet);
+            mBehavior.setBottomSheetCallback(
+                    new BottomSheetBehavior.BottomSheetCallback() {
+                        @Override
+                        public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                                dismiss();
+                                mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            }
+                        }
+
+                        @Override
+                        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                            // ignore
+                        }
+                    }
+            );
             if (isInstantShowContent()) {
                 // Отображаем контент сразу
                 showContent(true);

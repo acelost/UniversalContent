@@ -9,6 +9,6 @@ public interface BackPressedHandler {
     /**
      * Обработать нажатие на кнопку "назад".
      */
-    void onBackPressed();
+    boolean onBackPressed();
 
 }

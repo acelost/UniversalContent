@@ -1,6 +1,8 @@
 package com.acelost.universalcontent.lib.container.base;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
@@ -8,17 +10,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.acelost.universalcontent.R;
+import com.acelost.universalcontent.lib.container.property.ContentActionHandler;
 import com.acelost.universalcontent.lib.content.ContentCreator;
+import com.acelost.universalcontent.lib.content.property.BackPressedHandler;
 
 /**
  * Базовая реализация контейнера, основанного на {@link android.support.v4.app.DialogFragment}.
  */
-public class BaseContainerDialogFragment extends AppCompatDialogFragment {
+public class BaseContainerDialogFragment extends AppCompatDialogFragment
+        implements ContentActionHandler {
 
     /**
      * Ключ для хранения создателя контента в аргументах фрагмента-контейнера.
@@ -72,6 +78,18 @@ public class BaseContainerDialogFragment extends AppCompatDialogFragment {
     }
 
     /**
+     * Получить экземпляр создателя контента.
+     * @return экземпляр создателя контента
+     */
+    protected final ContentCreator getContentCreator() {
+        Bundle arguments = getArguments();
+        if (arguments == null) {
+            throw new IllegalStateException("Attempt to get content creator while arguments is not defined.");
+        }
+        return (ContentCreator) arguments.getSerializable(CONTENT_CREATOR_ARG);
+    }
+
+    /**
      * Задать экземпляр создателя контента. Этот метод необходимо вызывать
      * на новом экземпляре контейнера ДО попадания фрагмента в {@link android.support.v4.app.FragmentManager}.
      *
@@ -106,18 +124,34 @@ public class BaseContainerDialogFragment extends AppCompatDialogFragment {
         getChildFragmentManager().beginTransaction()
                 .replace(getContainerViewId(), contentFragment)
                 .commit();
+        // Подписываемся на событие нажатия кнопки "назад"
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setOnKeyListener(
+                    new DialogInterface.OnKeyListener() {
+                        @Override
+                        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                return onBackKeyPressed();
+                            }
+                            return false;
+                        }
+                    }
+            );
+        }
     }
 
     /**
-     * Получить экземпляр создателя контента.
-     * @return экземпляр создателя контента
+     * Обработать событие нажатия кнопки "назад"
+     * @return true - если событие обработано, false - иначе
      */
-    protected final ContentCreator getContentCreator() {
-        Bundle arguments = getArguments();
-        if (arguments == null) {
-            throw new IllegalStateException("Attempt to get content creator while arguments is not defined.");
+    protected boolean onBackKeyPressed() {
+        BackPressedHandler handler = getContentFragment(BackPressedHandler.class);
+        if (handler != null) {
+            // Передаем событие на обработку контенту
+            return handler.onBackPressed();
         }
-        return (ContentCreator) arguments.getSerializable(CONTENT_CREATOR_ARG);
+        return false;
     }
 
     // region Utility methods
@@ -133,6 +167,18 @@ public class BaseContainerDialogFragment extends AppCompatDialogFragment {
             setArguments(args);
         }
         return args;
+    }
+
+    // endregion
+
+    // region ContentActionHandler impl
+
+    @Override
+    public void onContentAction(@NonNull String contentId, int actionCode, @NonNull Bundle data) {
+        ContentActionHandler actionHandler = ContentActionHandler.Helper.getActionHandler(this);
+        if (actionHandler != null) {
+            actionHandler.onContentAction(contentId, actionCode, data);
+        }
     }
 
     // endregion
