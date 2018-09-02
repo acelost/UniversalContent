@@ -7,9 +7,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import com.acelost.universalcontent.R;
-import com.acelost.universalcontent.fragmentbased.properties.ResultHandler;
+import com.acelost.universalcontent.fragmentbased.properties.ActionHandler;
 
-public class AlertDialogContainer extends DialogContainer implements ResultHandler {
+public class AlertDialogContainer extends DialogContainer implements ActionHandler {
 
     public static AlertDialogContainer withContent(@NonNull Fragment content) {
         AlertDialogContainer container = new AlertDialogContainer();
@@ -25,7 +25,7 @@ public class AlertDialogContainer extends DialogContainer implements ResultHandl
 
     @Override
     public void onResult(@NonNull String contentId, int resultCode, @NonNull Bundle data) {
-        ResultHandler handler = ResultHandler.Helper.getResultHandler(this);
+        ActionHandler handler = ActionHandler.Helper.getResultHandler(this);
         if (handler != null) {
             handler.onResult(contentId, resultCode, data);
         }

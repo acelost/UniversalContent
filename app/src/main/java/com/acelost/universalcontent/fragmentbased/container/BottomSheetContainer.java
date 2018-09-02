@@ -51,7 +51,7 @@ public class BottomSheetContainer extends DialogContainer implements Appearing {
         if (context == null) {
             return super.onCreateDialog(savedInstanceState);
         }
-        return new BottomSheetDialog(getContext());
+        return new BottomSheetDialog(context);
     }
 
     @Override

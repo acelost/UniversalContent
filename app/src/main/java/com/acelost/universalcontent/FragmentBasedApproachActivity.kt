@@ -8,9 +8,10 @@ import android.widget.Toast
 import com.acelost.universalcontent.fragmentbased.container.*
 import com.acelost.universalcontent.fragmentbased.content.ProfileContentFragment
 import com.acelost.universalcontent.fragmentbased.content.impl.ProfileActivity
-import com.acelost.universalcontent.fragmentbased.properties.ResultHandler
+import com.acelost.universalcontent.fragmentbased.properties.ActionHandler
+import com.acelost.universalcontent.lib.container.bottomsheet.ContainerBottomSheet
 
-class FragmentBasedApproachActivity : AppCompatActivity(), ResultHandler {
+class FragmentBasedApproachActivity : AppCompatActivity(), ActionHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +21,9 @@ class FragmentBasedApproachActivity : AppCompatActivity(), ResultHandler {
                     .show(supportFragmentManager, "ALERT_DIALOG:PROFILE")
         }
         findViewById<Button>(R.id.show_bottom_sheet).setOnClickListener {
-            BottomSheetContainer.withContent(ProfileContentFragment())
+            ContainerBottomSheet()
                     .instant(false)
+                    .setContentCreator { ProfileContentFragment() }
                     .show(supportFragmentManager, "BOTTOM_SHEET:PROFILE")
         }
         findViewById<Button>(R.id.show_popup_menu).setOnClickListener {

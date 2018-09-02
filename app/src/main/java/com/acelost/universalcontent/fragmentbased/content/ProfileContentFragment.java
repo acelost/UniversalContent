@@ -18,9 +18,9 @@ import com.acelost.universalcontent.R;
 import com.acelost.universalcontent.contentbased.content.impl.ProfileContent;
 import com.acelost.universalcontent.contentbased.core.ContentContainer;
 import com.acelost.universalcontent.fragmentbased.properties.Appearing;
-import com.acelost.universalcontent.fragmentbased.properties.Disappearing;
 import com.acelost.universalcontent.fragmentbased.properties.HasTitle;
-import com.acelost.universalcontent.fragmentbased.properties.ResultHandler;
+import com.acelost.universalcontent.fragmentbased.properties.ActionHandler;
+import com.acelost.universalcontent.lib.container.property.Showable;
 
 import java.util.concurrent.TimeUnit;
 
@@ -102,6 +102,10 @@ public class ProfileContentFragment extends Fragment {
                                             if (appearing != null) {
                                                 appearing.requestAppearance();
                                             }
+                                            Showable showable = getContainer(Showable.class);
+                                            if (showable != null) {
+                                                showable.showContent();
+                                            }
                                         }
                                     }
                             )
@@ -111,7 +115,7 @@ public class ProfileContentFragment extends Fragment {
             mRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ResultHandler handler = getContainer(ResultHandler.class);
+                    ActionHandler handler = getContainer(ActionHandler.class);
                     if (handler != null) {
                         Bundle data = new Bundle();
                         data.putString("message", "Hello, world!");
